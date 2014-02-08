@@ -27,40 +27,40 @@ describe ChessValidator::MoveEvaluator do
 
     context "the white pawn" do
       it "advances one or two moves, but not three" do
-        good(:pawn, 'a2', 'a3')
-        good(:pawn, 'a2', 'a4')
-        bad(:pawn, 'a2', 'a5')
-        good(:pawn, 'e2', 'e3')
+        good(ChessValidator::Pawn, 'a2', 'a3')
+        good(ChessValidator::Pawn, 'a2', 'a4')
+        bad(ChessValidator::Pawn, 'a2', 'a5')
+        good(ChessValidator::Pawn, 'e2', 'e3')
       end
     end
 
     context "the black pawn" do
       it "advances one or two moves, but not three" do
-        good(:pawn, 'a7', 'a6')
-        good(:pawn, 'a7', 'a5')
-        bad(:pawn, 'a7', 'a4')
+        good(ChessValidator::Pawn, 'a7', 'a6')
+        good(ChessValidator::Pawn, 'a7', 'a5')
+        bad(ChessValidator::Pawn, 'a7', 'a4')
       end
 
       it "tries a sneaky diagonal move" do
-        bad(:pawn, 'a7', 'b6')
+        bad(ChessValidator::Pawn, 'a7', 'b6')
       end
     end
 
     context "the black knight" do
       it "hooks down and to the left" do
-        good(:knight, 'b8', 'a6')
+        good(ChessValidator::Knight, 'b8', 'a6')
       end
       it "hooks down and to the right" do
-        good(:knight, 'b8', 'c6')
+        good(ChessValidator::Knight, 'b8', 'c6')
       end
       it "hooks too far to the right" do
-        bad(:knight, 'b8', 'd7')
+        bad(ChessValidator::Knight, 'b8', 'd7')
       end
     end
 
     context "invalid piece" do
       it "tries any move" do
-        bad(:invalid, 'e3', 'e2')
+        bad(ChessValidator::Empty, 'e3', 'e2')
       end
     end
   end
@@ -70,13 +70,13 @@ describe ChessValidator::MoveEvaluator do
     subject(:evaluator) { ChessValidator::MoveEvaluator.new(board) }
     context "white pawn" do
       it "tries to jump to hyperspace" do
-        bad(:pawn, 'f2', 'b7')
+        bad(ChessValidator::Pawn, 'f2', 'b7')
       end
     end
 
     context "piece not on the board" do
       it "tries to do much of anything" do
-        bad(:invalid, 'g7', 'g2')
+        bad(ChessValidator::Empty, 'g7', 'g2')
       end
     end
 
@@ -88,20 +88,20 @@ describe ChessValidator::MoveEvaluator do
     context "the king" do
       context "moves exactly one square" do
         it "horizontally" do
-          good(:king, 'a8', 'b8')
+          good(ChessValidator::King, 'a8', 'b8')
         end
 
         it "vertically" do
-          good(:king, 'a8', 'a7')
+          good(ChessValidator::King, 'a8', 'a7')
         end
 
         it "diagonally" do
-          good(:king, 'a8', 'b7')
+          good(ChessValidator::King, 'a8', 'b7')
         end
       end
 
       it "tries to go somewhere bizarre" do
-        bad(:king, 'a8', 'g5')
+        bad(ChessValidator::King, 'a8', 'g5')
       end
 
       # A special move with the king known as castling is allowed only
@@ -114,17 +114,17 @@ describe ChessValidator::MoveEvaluator do
     context "the rook" do
       context "moves any number of vacant squares" do
         it "in a horizontal direction" do
-          good(:rook, 'a3', 'b3')
+          good(ChessValidator::Rook, 'a3', 'b3')
         end
 
         it "in a vertical direction" do
-          good(:rook, 'a3', 'a4')
-          good(:rook, 'a3', 'a2')
-          good(:rook, 'a3', 'a1')
+          good(ChessValidator::Rook, 'a3', 'a4')
+          good(ChessValidator::Rook, 'a3', 'a2')
+          good(ChessValidator::Rook, 'a3', 'a1')
         end
 
         it "but not in a diagonal direction" do
-          bad(:rook, 'a3', 'b4')
+          bad(ChessValidator::Rook, 'a3', 'b4')
         end
       end
 
@@ -139,15 +139,15 @@ describe ChessValidator::MoveEvaluator do
     # A bishop moves any number of vacant squares in any diagonal direction.
     context "the bishop" do
       it "moves any number of vacant squares" do
-        good(:bishop, 'f8', 'h6')
-        good(:bishop, 'f8', 'h6')
-        good(:bishop, 'f8', 'e7')
-        good(:bishop, 'f8', 'd6')
+        good(ChessValidator::Bishop, 'f8', 'h6')
+        good(ChessValidator::Bishop, 'f8', 'h6')
+        good(ChessValidator::Bishop, 'f8', 'e7')
+        good(ChessValidator::Bishop, 'f8', 'd6')
       end
 
       it "does not move in any other direction" do
-        bad(:bishop, 'f8', 'f7')
-        bad(:bishop, 'f8', 'c1')
+        bad(ChessValidator::Bishop, 'f8', 'f7')
+        bad(ChessValidator::Bishop, 'f8', 'c1')
       end
 
       context "it cannot skip over occupied squares", wip: true
@@ -158,18 +158,18 @@ describe ChessValidator::MoveEvaluator do
     context "the queen" do
       context "moves any number of vacant squares in a " do
         it "vertical direction" do
-          good(:queen, 'f4', 'f3')
-          good(:queen, 'f4', 'f5')
-          good(:queen, 'f4', 'f6')
+          good(ChessValidator::Queen, 'f4', 'f3')
+          good(ChessValidator::Queen, 'f4', 'f5')
+          good(ChessValidator::Queen, 'f4', 'f6')
         end
         it "horizontal direction" do
-          good(:queen, 'f4', 'g4')
+          good(ChessValidator::Queen, 'f4', 'g4')
         end
         it "diagonal direction" do
-          good(:queen, 'f4', 'h2')
+          good(ChessValidator::Queen, 'f4', 'h2')
         end
         it "does not move in any other direction" do
-          bad(:queen, 'f4', 'g2')
+          bad(ChessValidator::Queen, 'f4', 'g2')
         end
       end
     end

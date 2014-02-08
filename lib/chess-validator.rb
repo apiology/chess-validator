@@ -1,5 +1,26 @@
 module ChessValidator
 
+  class Pawn
+  end
+
+  class Knight
+  end
+
+  class King
+  end
+
+  class Bishop
+  end
+
+  class Rook
+  end
+
+  class Queen
+  end
+
+  class Empty
+  end
+
   class Position
     attr_reader :rank, :file
 
@@ -24,18 +45,18 @@ module ChessValidator
     private
 
     PIECE_TYPE_STRINGS = {
-      'K' => :king,
-      'B' => :bishop,
-      'Q' => :queen,
-      'R' => :rook,
-      'P' => :pawn,
-      'N' => :knight
+      'K' => King,
+      'B' => Bishop,
+      'Q' => Queen,
+      'R' => Rook,
+      'P' => Pawn,
+      'N' => Knight
     }
 
     def parse_rank(line)
       line.split(' ').map do |piece|
         if piece == '--'
-          :invalid
+          Empty
         else
           piece_type = PIECE_TYPE_STRINGS[piece[1]]
           fail "Couldn't understand #{piece}" if piece_type.nil?
@@ -53,17 +74,16 @@ module ChessValidator
     # Ranks are numbers are rows, Files are letters are columns
     def evaluate(from, to)
       type = @board.piece_type(from)
-      if type == :pawn
-        vertical_delta(from, to) != 3 &&
-          horizontal_delta(from, to) == 0
-      elsif type == :knight
+      if type == Pawn
+        vertical_delta(from, to) != 3 &&horizontal_delta(from, to) == 0
+      elsif type == Knight
         vertical_delta(from, to) == 2
-      elsif type == :king
+      elsif type == King
         horizontal_delta(from, to).abs <= 1 &&
           vertical_delta(from, to).abs <= 1
-      elsif type == :bishop
+      elsif type == Bishop
         horizontal_delta(from, to) == vertical_delta(from, to)
-      elsif type == :rook
+      elsif type == Rook
         if horizontal_delta(from, to) > 0
           vertical_delta(from, to) == 0
         elsif vertical_delta(from, to) > 0
@@ -71,7 +91,7 @@ module ChessValidator
         else
           true
         end
-      elsif type == :queen
+      elsif type == Queen
         horiz = horizontal_delta(from, to)
         vert = vertical_delta(from, to)
         if horiz > 0
@@ -81,7 +101,7 @@ module ChessValidator
         else
           true
         end
-      elsif type == :invalid
+      elsif type == Empty
         false
       else
         fail "Could not understand piece type #{type}"

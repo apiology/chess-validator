@@ -16,7 +16,7 @@ describe ChessValidator::Board do
       ('a'..'h').each do |file|
         context "position #{file}#{pawn_rank}" do
           it "is a pawn" do
-            expect_position("#{file}#{rank}", :pawn)
+            expect_position("#{file}#{rank}", ChessValidator::Pawn)
           end
         end
       end
@@ -29,7 +29,7 @@ describe ChessValidator::Board do
 
     context "empty position" do
       it "is empty" do
-        expect_position("a2", :invalid)
+        expect_position("a2", ChessValidator::Empty)
       end
     end
   end
