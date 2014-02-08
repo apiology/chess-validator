@@ -157,10 +157,20 @@ describe ChessValidator::MoveEvaluator do
     # vertical, or diagonal direction.
     context "the queen" do
       context "moves any number of vacant squares in a " do
-        it "vertical direction", wip: true
-        it "horizontal direction", wip: true
-        it "diagonal direction", wip: true
-        it "does not move in any other direction", wip: true
+        it "vertical direction" do
+          good(:queen, 'f4', 'f3')
+          good(:queen, 'f4', 'f5')
+          good(:queen, 'f4', 'f6')
+        end
+        it "horizontal direction" do
+          good(:queen, 'f4', 'g4')
+        end
+        it "diagonal direction" do
+          good(:queen, 'f4', 'h2')
+        end
+        it "does not move in any other direction" do
+          bad(:queen, 'f4', 'g2')
+        end
       end
     end
 

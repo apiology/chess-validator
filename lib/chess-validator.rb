@@ -71,6 +71,16 @@ module ChessValidator
         else
           true
         end
+      elsif type == :queen
+        horiz = horizontal_delta(from, to)
+        vert = vertical_delta(from, to)
+        if horiz > 0
+          vert == 0 || horiz == vert
+        elsif vert > 0
+          true
+        else
+          true
+        end
       elsif type == :invalid
         false
       else
