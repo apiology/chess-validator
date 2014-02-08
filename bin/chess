@@ -7,7 +7,8 @@ if ARGV.size != 1
   exit false
 end
 
-evaluator = ChessValidator::MoveEvaluator.new
+board = ChessValidator::Board.new
+evaluator = ChessValidator::MoveEvaluator.new(board)
 while line = $stdin.gets do
   move = line.split(' ')
   puts evaluator.evaluate(*move) ? 'LEGAL' : 'ILLEGAL'
