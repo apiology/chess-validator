@@ -1,0 +1,29 @@
+PATH
+  remote: .
+  specs:
+    chess-validator (0.0.1)
+
+GEM
+  remote: https://rubygems.org/
+  specs:
+    diff-lcs (1.2.5)
+    rake (10.1.0)
+    rspec (3.0.0.beta1)
+      rspec-core (= 3.0.0.beta1)
+      rspec-expectations (= 3.0.0.beta1)
+      rspec-mocks (= 3.0.0.beta1)
+    rspec-core (3.0.0.beta1)
+    rspec-expectations (3.0.0.beta1)
+      diff-lcs (>= 1.1.3, < 2.0)
+      rspec-support (= 3.0.0.beta1)
+    rspec-mocks (3.0.0.beta1)
+    rspec-support (3.0.0.beta1)
+
+PLATFORMS
+  ruby
+
+DEPENDENCIES
+  bundler (~> 1.3)
+  chess-validator!
+  rake
+  rspec (= 3.0.0.beta1)

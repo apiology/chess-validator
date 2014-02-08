@@ -1,0 +1,14 @@
+#!/usr/bin/env ruby
+
+require 'chess-validator'
+
+if ARGV.size != 1
+  puts "USAGE: chess [input board file] < [moves file]"
+  exit false
+end
+
+evaluator = ChessValidator::MoveEvaluator.new
+while line = $stdin.gets do
+  move = line.split(' ')
+  puts evaluator.evaluate(*move) ? 'LEGAL' : 'ILLEGAL'
+end

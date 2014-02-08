@@ -1,0 +1,5 @@
+cd ~/src/chess-validator && bundle exec rake spec until it passes.
+
+Add rubocop and quality gem
+dashes in filenames?
+Get simplecov in the mix
