@@ -3,27 +3,18 @@ require 'spec_helper'
 require 'chess-validator'
 
 describe ChessValidator::Board do
-  def good(from, to)
-    try_move(from, to, true)
-  end
-
-  def bad(from, to)
-    try_move(from, to, false)
-  end
-
-  def try_move(from, to, ret)
-    expect(board.evaluate(ChessValidator::Position.new(from),
-                          ChessValidator::Position.new(to))).to eq ret
-  end
-
-  it "can't stand still", wip: true
-
   it "tries to capture own piece", wip: true
 
   subject(:board) { ChessValidator::Board.new(board_text) }
 
   context "In the opening board" do
     subject(:board_text) { IO.read('spec/samples/simple_board.txt') }
+
+    it "can't stand still" do
+      all_positions.each do |position|
+        bad(position, position)
+      end
+    end
 
     context "the white pawn" do
       it "advances one or two moves, but not three" do
@@ -201,5 +192,24 @@ describe ChessValidator::Board do
     # The pawn is also involved in the two special moves en passant
     # and promotion (Schiller 2003:17–19).
     context "the pawn", wip: true
+  end
+
+  def good(from, to)
+    try_move(from, to, true)
+  end
+
+  def bad(from, to)
+    try_move(from, to, false)
+  end
+
+  def try_move(from, to, ret)
+    expect(board.evaluate(ChessValidator::Position.new(from),
+                          ChessValidator::Position.new(to))).to eq ret
+  end
+
+  def all_positions
+    ('a'..'h').flat_map do |letter|
+      (1..8).map { |number| "#{letter}#{number}" }
+    end
   end
 end
