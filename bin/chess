@@ -8,10 +8,9 @@ if ARGV.size != 1
 end
 
 board = ChessValidator::Board.new(IO.read(ARGV[0]))
-evaluator = ChessValidator::MoveEvaluator.new(board)
 while line = $stdin.gets do
   move = line.split(' ')
   from = ChessValidator::Position.new(move[0])
   to = ChessValidator::Position.new(move[1])
-  puts evaluator.evaluate(from, to) ? 'LEGAL' : 'ILLEGAL'
+  puts board.evaluate(from, to) ? 'LEGAL' : 'ILLEGAL'
 end
