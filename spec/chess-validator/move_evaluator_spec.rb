@@ -12,7 +12,8 @@ describe ChessValidator::MoveEvaluator do
 
   def try_move(piece_type, from, to, ret)
     allow(opening_board).to receive(:piece_type).and_return(piece_type)
-    expect(evaluator.evaluate(from, to)).to eq ret
+    expect(evaluator.evaluate(ChessValidator::Position.new(from),
+                              ChessValidator::Position.new(to))).to eq ret
   end
 
   context "In the opening board" do

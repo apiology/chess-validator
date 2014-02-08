@@ -1,24 +1,24 @@
 module ChessValidator
 
+  class Position
+    attr_reader :rank, :file
+
+    def initialize(str)
+      @str = str
+      @rank = @str[1].to_i
+      @file = @str[0].ord - 'a'.ord + 1
+    end
+  end
+
   class Board
     def piece_type(from)
-      if [2, 7].include? rank(from)
+      if [2, 7].include? from.rank
         :pawn
-      elsif [8].include? rank(from)
+      elsif [8].include? from.rank
         :rook
       else
         :invalid
       end
-    end
-
-    private
-
-    def rank(position)
-      position[1].to_i
-    end
-
-    def file(position)
-      position[0].ord - 'a'.ord + 1
     end
   end
 
@@ -45,19 +45,11 @@ module ChessValidator
     private
 
     def horizontal_delta(from, to)
-      (file(to) - file(from)).abs
+      (to.file - from.file).abs
     end
 
     def vertical_delta(from, to)
-      (rank(to) - rank(from)).abs
-    end
-
-    def rank(position)
-      position[1].to_i
-    end
-
-    def file(position)
-      position[0].ord - 'a'.ord + 1
+      (to.rank - from.rank).abs
     end
   end
 end
