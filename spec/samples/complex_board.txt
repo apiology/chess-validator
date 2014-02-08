@@ -1,9 +1,8 @@
-bK -- -- -- -- bB -- -- 8
--- -- -- -- -- bP -- -- 7
--- bP wR -- wB -- bN -- 6
-wN -- bP bR -- -- -- wP 5
--- -- -- -- wK wQ -- wP 4
-wR -- bB wN wP -- -- -- 3
--- wP bQ -- -- wP -- -- 2
--- -- -- -- -- wB -- -- 1
-a  b  c  d  e  f  g  h
+bK -- -- -- -- bB -- --
+-- -- -- -- -- bP -- --
+-- bP wR -- wB -- bN --
+wN -- bP bR -- -- -- wP
+-- -- -- -- wK wQ -- wP
+wR -- bB wN wP -- -- --
+-- wP bQ -- -- wP -- --
+-- -- -- -- -- wB -- --
