@@ -59,9 +59,18 @@ module ChessValidator
       elsif type == :knight
         vertical_delta(from, to) == 2
       elsif type == :king
-        true
+        horizontal_delta(from, to).abs <= 1 &&
+          vertical_delta(from, to).abs <= 1
       elsif type == :bishop
-        true
+        horizontal_delta(from, to) == vertical_delta(from, to)
+      elsif type == :rook
+        if horizontal_delta(from, to) > 0
+          vertical_delta(from, to) == 0
+        elsif vertical_delta(from, to) > 0
+          true
+        else
+          true
+        end
       elsif type == :invalid
         false
       else
