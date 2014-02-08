@@ -41,15 +41,15 @@ describe ChessValidator::MoveEvaluator do
       end
     end
 
-    context "the black rook" do
+    context "the black knight" do
       it "hooks down and to the left" do
-        good(:rook, 'b8', 'a6')
+        good(:knight, 'b8', 'a6')
       end
       it "hooks down and to the right" do
-        good(:rook, 'b8', 'c6')
+        good(:knight, 'b8', 'c6')
       end
       it "hooks too far to the right" do
-        bad(:rook, 'b8', 'd7')
+        bad(:knight, 'b8', 'd7')
       end
     end
 
@@ -67,9 +67,8 @@ describe ChessValidator::MoveEvaluator do
       it "tries to jump to hyperspace" do
         bad(:pawn, 'f2', 'b7')
       end
-
-
     end
+
     context "piece not on the board" do
       it "tries to do much of anything" do
         bad(:invalid, 'g7', 'g2')

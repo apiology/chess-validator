@@ -11,13 +11,36 @@ module ChessValidator
   end
 
   class Board
-    def piece_type(from)
-      if [2, 7].include? from.rank
-        :pawn
-      elsif [8].include? from.rank
-        :rook
-      else
-        :invalid
+    def initialize(board)
+      @pieces = board.each_line.map do |line|
+        parse_rank(line)
+      end.reverse # ranks of the last line of the file is 1...
+    end
+
+    def piece_type(position)
+      @pieces[position.rank-1][position.file-1]
+    end
+
+    private
+
+    PIECE_TYPE_STRINGS = {
+      'K' => :king,
+      'B' => :bishop,
+      'Q' => :queen,
+      'R' => :rook,
+      'P' => :pawn,
+      'N' => :knight
+    }
+
+    def parse_rank(line)
+      line.split(' ').map do |piece|
+        if piece == '--'
+          :invalid
+        else
+          piece_type = PIECE_TYPE_STRINGS[piece[1]]
+          fail "Couldn't understand #{piece}" if piece_type.nil?
+          piece_type
+        end
       end
     end
   end
@@ -33,12 +56,16 @@ module ChessValidator
       if type == :pawn
         vertical_delta(from, to) != 3 &&
           horizontal_delta(from, to) == 0
-      elsif type == :rook
+      elsif type == :knight
         vertical_delta(from, to) == 2
+      elsif type == :king
+        true
+      elsif type == :bishop
+        true
       elsif type == :invalid
         false
       else
-        fail
+        fail "Could not understand piece type #{type}"
       end
     end
 

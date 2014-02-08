@@ -109,11 +109,12 @@ describe "Chess validator" do
   # simple_moves.txt
   # simple_results.txt
 
-  # TODO: Add 'complex' after simple stuff works
+  # TODO: Add 'complex_2' after simple stuff works
+  # 'complex_1'
   ['simple'].each do |type|
-    it "handles #{type} case", wip: true do
+    it "handles #{type} case", wip: false do
       expect(exec_io "cat spec/samples/#{type}_moves.txt | " +
-             "chess spec/features/#{type}_board.txt")
+             "chess spec/samples/#{type}_board.txt")
       .to eq(IO.read("spec/samples/#{type}_results.txt"))
     end
   end
