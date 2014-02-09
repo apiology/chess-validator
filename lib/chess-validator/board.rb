@@ -34,6 +34,11 @@ module ChessValidator
       'N' => Knight
     }
 
+    PIECE_COLOR = {
+      'w' => :white,
+      'b' => :black
+    }
+
     def parse_board(board)
       board.each_line.map do |line|
         parse_rank(line)
@@ -51,9 +56,10 @@ module ChessValidator
         EmptySquare.new
       else
         piece_type = PIECE_TYPES[piece[1]]
-        fail "Couldn't understand #{piece}" if piece_type.nil?
-        color = piece[0] == 'b' ? :black : :white
-        Square.new(color, piece_type.new(@checker))
+        fail "Couldn't understand type of #{piece}" if piece_type.nil?
+        piece_color = PIECE_COLOR[piece[0]]
+        fail "Couldn't understand color of #{piece}" if piece_color.nil?
+        Square.new(piece_color, piece_type.new(@checker))
       end
     end
   end
