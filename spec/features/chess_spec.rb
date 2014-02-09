@@ -8,7 +8,6 @@ describe "Chess validator" do
       .to eq("USAGE: chess [input board file] < [moves file]\n")
   end
 
-  # TODO: e4 e5 would put king into check; is actually illegal
   ['simple', 'complex_1', 'complex_2', 'complex_3',
    'complex_4', 'complex_5', 'extra'].each do |type|
     it "handles #{type} case", wip: false do
