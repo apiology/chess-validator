@@ -1,4 +1,6 @@
 module ChessValidator
+  # A Board which was parsed from a string per the representation at
+  # http://www.puzzlenode.com/puzzles/13-chess-validator
   class ParsedBoard < Board
     def initialize(board)
       @checker = PathChecker.new(self)

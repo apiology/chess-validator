@@ -1,4 +1,6 @@
 module ChessValidator
+  # TODO: PathChecker or MoveChecker?
+  # Checks whether a given move is valid along a given path
   class PathChecker
     def initialize(board)
       @board = board
@@ -67,17 +69,17 @@ module ChessValidator
 
     def file_steps(from, to)
       if from.file > to.file
-        (from.file-1).downto(to.file+1)
+        (from.file - 1).downto(to.file + 1)
       else
-        (from.file+1).upto(to.file-1)
+        (from.file + 1).upto(to.file - 1)
       end
     end
 
     def rank_steps(from, to)
       if from.rank > to.rank
-        (from.rank-1).downto(to.rank+1)
+        (from.rank - 1).downto(to.rank + 1)
       else
-        (from.rank+1).upto(to.rank-1)
+        (from.rank + 1).upto(to.rank - 1)
       end
     end
 

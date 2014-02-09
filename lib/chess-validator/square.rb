@@ -1,4 +1,5 @@
 module ChessValidator
+  # No pieces in this square
   class EmptySquare
     def color
       :empty
@@ -13,6 +14,8 @@ module ChessValidator
     end
   end
 
+  # TODO: Rename to OccupiedSquare?
+  # Occupied square
   class Square
     attr_reader :color
 

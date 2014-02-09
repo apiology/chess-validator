@@ -3,6 +3,8 @@ require_relative 'square'
 require_relative 'path_checker'
 
 module ChessValidator
+  # Represents the entire chess board, as an indexed array by (rank,
+  # file) of Square objects.
   class Board
     attr_writer :checker, :squares
 
@@ -12,13 +14,18 @@ module ChessValidator
     end
 
     def valid_move?(from, to)
-      !same_color?(from, to) && from != to && square(from).valid_move?(from, to)
+      !same_color?(from, to) && from != to &&
+        square(from).valid_move?(from, to)
     end
 
     def make_move(from, to)
       new_squares = @squares.dup
-      new_squares[to.rank-1][to.file-1] = new_squares[from.rank-1][from.file-1]
-      new_squares[from.rank-1][from.file-1] = EmptySquare.new
+
+      new_squares[to.rank - 1][to.file - 1] =
+        new_squares[from.rank - 1][from.file - 1]
+
+      new_squares[from.rank - 1][from.file - 1] = EmptySquare.new
+
       Board.new(new_squares)
     end
 
@@ -31,7 +38,7 @@ module ChessValidator
     end
 
     def square(position)
-      @squares[position.rank-1][position.file-1]
+      @squares[position.rank - 1][position.file - 1]
     end
 
     private

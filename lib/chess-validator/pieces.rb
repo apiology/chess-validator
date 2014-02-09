@@ -1,6 +1,7 @@
 # rank == rows == numbers
 # file == columns == numbers
 module ChessValidator
+  # Represents a type of chess piece (Pawn/Rook/Knight/etc)
   class PieceType
     def initialize(checker)
       @checker = checker
@@ -20,10 +21,11 @@ module ChessValidator
   end
 
   class Pawn < PieceType
+    # TODO: Try to reduce size of method
     def valid_move?(from, to)
       vdelta = vertical_delta(from, to)
       hdelta = horizontal_delta(from, to)
-      # TODO can't capture backwards
+      # TODO: can't capture backwards--write test case and then fix
       if vdelta == 1 && hdelta == 1 && @checker.valid_capture?(from, to)
         true
       elsif hdelta != 0
@@ -31,7 +33,7 @@ module ChessValidator
       elsif @checker.backwards?(from, to)
         false
       elsif vdelta == 2
-        # TODO what if they are the wrong color?
+        # TODO: what if they are the wrong color?  Write test case and then fix.
         from.rank == 2 || from.rank == 7
       elsif vdelta == 1
         true
