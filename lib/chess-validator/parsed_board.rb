@@ -43,7 +43,7 @@ module ChessValidator
         fail "Couldn't understand type of #{piece}" if piece_type.nil?
         piece_color = PIECE_COLORS[piece[0]]
         fail "Couldn't understand color of #{piece}" if piece_color.nil?
-        Square.new(piece_color, piece_type.new(@checker))
+        OccupiedSquare.new(piece_color, piece_type.new(@checker))
       end
     end
   end

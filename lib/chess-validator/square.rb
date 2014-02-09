@@ -14,9 +14,8 @@ module ChessValidator
     end
   end
 
-  # TODO: Rename to OccupiedSquare?
-  # Occupied square
-  class Square
+  # This square has a piece in it
+  class OccupiedSquare
     attr_reader :color
 
     def initialize(color, piece)
