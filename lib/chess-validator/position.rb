@@ -21,5 +21,9 @@ module ChessValidator
     def to_s
       "Position(#{file_str}#{rank})"
     end
+
+    def ==(other)
+      rank == other.rank && file == other.file
+    end
   end
 end

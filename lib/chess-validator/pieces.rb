@@ -1,13 +1,10 @@
-require_relative 'path_checker'
-
 # rank == rows == numbers
 # file == columns == numbers
 
 module ChessValidator
   class PieceType
-    def initialize(board)
-      @board = board
-      @checker = PathChecker.new(board)
+    def initialize(checker)
+      @checker = checker
     end
 
     def to_s

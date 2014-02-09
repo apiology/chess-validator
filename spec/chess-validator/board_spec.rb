@@ -251,8 +251,8 @@ describe ChessValidator::Board do
   end
 
   def try_move(from, to, ret)
-    expect(board.evaluate(ChessValidator::Position.parse(from),
-                          ChessValidator::Position.parse(to))).to eq ret
+    expect(board.valid_move?(ChessValidator::Position.parse(from),
+                             ChessValidator::Position.parse(to))).to eq ret
   end
 
   def all_positions
