@@ -287,20 +287,15 @@ describe ChessValidator::Board do
       context "can capture opposing pieces" do
         it "as king" do
           good('e4', 'd5')
-          bad('e4', 'f4')
         end
 
         it "as rook" do
           good('c6', 'b6')
           good('c6', 'c5')
-          bad('c6', 'c3')
-          bad('c6', 'e6')
         end
 
         it "as bishop" do
-          bad('f8', 'c5')
           good('c3', 'b2')
-          bad('f1', 'd3')
           good('e6', 'd5')
         end
 
@@ -308,12 +303,10 @@ describe ChessValidator::Board do
           good('c2', 'b2')
           good('c2', 'f2')
           good('c2', 'd3')
-          bad('f4', 'e4')
         end
 
         it "as knight" do
           good('d3', 'c5')
-          bad('d3', 'f2')
         end
 
         # Pawns are the only pieces that capture differently from how they
@@ -330,13 +323,42 @@ describe ChessValidator::Board do
             good('h5', 'g6')
             good('b2', 'c3')
           end
-          it "cannot move to those squares if they are vacant", wip: true
-          it "cannot move to those squares if friendly piece is there",
-            wip: true
+
+          it "cannot move to those squares if they are vacant" do
+            bad('f2', 'g3')
+            bad('c5', 'd4')
+          end
         end
       end
 
-      context "cannot capture friendly pieces", wip: true
+      context "cannot capture friendly pieces" do
+        it "as king" do
+          bad('e4', 'f4')
+        end
+
+        it "as rook" do
+          bad('c6', 'c3')
+          bad('c6', 'e6')
+        end
+
+        it "as bishop" do
+          bad('f8', 'c5')
+          bad('f1', 'd3')
+        end
+
+        it "as queen" do
+          bad('f4', 'e4')
+        end
+
+        it "as knight" do
+          bad('d3', 'f2')
+        end
+
+        it "as pawn" do
+          bad('b6', 'c5')
+          bad('f2', 'e3')
+        end
+      end
     end
   end
 
