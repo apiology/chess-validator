@@ -13,12 +13,6 @@ module ChessValidator
     end
 
     # TODO figure out something better here
-    def self.parse(board)
-      o = allocate
-      o.checker = PathChecker.new(o)
-      o.squares = o.parse_board(board)
-      o
-    end
 
     def valid_move?(from, to)
       !same_color?(from, to) &&
@@ -41,6 +35,16 @@ module ChessValidator
       end
     end
 
+    def square(position)
+      @squares[position.rank-1][position.file-1]
+    end
+
+    private
+
+    def same_color?(from, to)
+      square(from).color == square(to).color
+    end
+
     def all_positions
       all_ranks.zip(all_files).map { |rank, file| Position.new(rank, file) }
     end
@@ -52,21 +56,20 @@ module ChessValidator
     def all_files
       (1..8)
     end
+  end
 
-    def square(position)
-      @squares[position.rank-1][position.file-1]
+  class ParsedBoard < Board
+    def initialize(board)
+      @checker = PathChecker.new(self)
+      @squares = parse_board(board)
     end
+
+    private
 
     def parse_board(board)
       board.each_line.map do |line|
         parse_rank(line)
       end.reverse # ranks of the last line of the file is 1...
-    end
-
-    private
-
-    def same_color?(from, to)
-      square(from).color == square(to).color
     end
 
     PIECE_TYPES = {

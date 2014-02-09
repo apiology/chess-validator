@@ -7,7 +7,7 @@ if ARGV.size != 1
   exit false
 end
 
-board = ChessValidator::Board.parse(IO.read(ARGV[0]))
+board = ChessValidator::ParsedBoard.new(IO.read(ARGV[0]))
 while line = $stdin.gets do
   move = line.split(' ')
   from = ChessValidator::Position.parse(move[0])

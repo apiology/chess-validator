@@ -3,7 +3,7 @@ require 'spec_helper'
 require 'chess-validator'
 
 describe ChessValidator::Board do
-  subject(:board) { ChessValidator::Board.parse(board_text) }
+  subject(:board) { ChessValidator::ParsedBoard.new(board_text) }
 
   context "In the opening board" do
     subject(:board_text) { IO.read('spec/samples/simple_board.txt') }
