@@ -22,7 +22,7 @@ module ChessValidator
     end
 
     def clear?
-      @piece.clear?
+      false
     end
 
     def valid_move?(from, to)

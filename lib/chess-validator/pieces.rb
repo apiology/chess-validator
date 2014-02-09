@@ -10,10 +10,6 @@ module ChessValidator
       @checker = PathChecker.new(board)
     end
 
-    def clear?
-      false
-    end
-
     def to_s
       self.class.to_s
     end
@@ -25,30 +21,16 @@ module ChessValidator
     def vertical_delta(from, to)
       (to.rank - from.rank).abs
     end
-
-    def valid_move?(from, to)
-      if from.rank == to.rank &&
-          from.file == to.file
-        false
-      # TODO: Pass in squares rather than positions so I don't have
-      # to work through board?
-      elsif @board.square(from).color == @board.square(to).color
-        # can't capture own position
-        false
-      else
-        internal_valid_move?(from, to)
-      end
-    end
   end
 
   class Pawn < PieceType
-    def internal_valid_move?(from, to)
+    def valid_move?(from, to)
       vertical_delta(from, to) != 3 && horizontal_delta(from, to) == 0
     end
   end
 
   class Knight < PieceType
-    def internal_valid_move?(from, to)
+    def valid_move?(from, to)
       v = vertical_delta(from, to)
       h = horizontal_delta(from, to)
       (v == 2 && h == 1) || (h == 2 && v == 1)
@@ -56,21 +38,21 @@ module ChessValidator
   end
 
   class King < PieceType
-    def internal_valid_move?(from, to)
+    def valid_move?(from, to)
       horizontal_delta(from, to).abs <= 1 &&
         vertical_delta(from, to).abs <= 1
     end
   end
 
   class Bishop < PieceType
-    def internal_valid_move?(from, to)
+    def valid_move?(from, to)
       horizontal_delta(from, to) == vertical_delta(from, to) &&
         @checker.diagonal_clear(from, to)
     end
   end
 
   class Rook < PieceType
-    def internal_valid_move?(from, to)
+    def valid_move?(from, to)
       if horizontal_delta(from, to) > 0
         vertical_delta(from, to) == 0 && @checker.horiz_clear(from, to)
       elsif vertical_delta(from, to) > 0
@@ -82,7 +64,7 @@ module ChessValidator
   end
 
   class Queen < PieceType
-    def internal_valid_move?(from, to)
+    def valid_move?(from, to)
       horiz = horizontal_delta(from, to)
       vert = vertical_delta(from, to)
       if horiz > 0
