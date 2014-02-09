@@ -16,7 +16,15 @@ describe ChessValidator::Board do
       end
     end
 
+    it "can capture opposing pieces", wip: true
+
+    it "cannot capture friendly pieces", wip: true
+
     context "the white pawn" do
+      it "tries to jump to hyperspace" do
+        bad('f2', 'b7')
+      end
+
       it "advances one or two moves, but not three" do
         good('a2', 'a3')
         good('a2', 'a4')
@@ -59,12 +67,6 @@ describe ChessValidator::Board do
   context "In a more complex board" do
     subject(:board_text) { IO.read('spec/samples/complex_board.txt') }
 
-    context "white pawn" do
-      it "tries to jump to hyperspace" do
-        bad('f2', 'b7')
-      end
-    end
-
     context "piece not on the board" do
       it "tries to do much of anything" do
         bad('g7', 'g2')
@@ -97,6 +99,8 @@ describe ChessValidator::Board do
 
       # A special move with the king known as castling is allowed only
       # once per player, per game (see below).
+      #
+      # Note: not part of puzzlenode.com challenge
       it "tries to castle", wip: true
     end
 
@@ -117,11 +121,15 @@ describe ChessValidator::Board do
         it "but not in a diagonal direction" do
           bad('a3', 'b4')
         end
+
+        it "cannot move any other way" do
+          bad('c6', 'e8')
+        end
+
+        it "cannot skip over occupied squares" do
+          bad('c6', 'a6')
+        end
       end
-
-      context "it cannot move any other way", wip: true
-
-      context "it cannot skip over occupied squares", wip: true
 
       it "It also is moved when castling.", wip: true
     end
@@ -162,6 +170,9 @@ describe ChessValidator::Board do
         it "does not move in any other direction" do
           bad('f4', 'g2')
         end
+        it "cannot skip over occupied squares" do
+          bad('f4', 'f8')
+        end
       end
     end
 
@@ -171,7 +182,13 @@ describe ChessValidator::Board do
     # horizontally then two squares vertically—i.e. in an "L"
     # pattern.) The knight is not blocked by other pieces: it jumps to
     # the new location.
-    context "the knight", wip: true
+    context "the knight" do
+      context "moves to the nearest square not on the same rank," +
+        "file, or diagonal" wip: true
+      context "can jump over other pieces", wip: true
+    end
+
+    context "can't create check condition", wip: true
 
     # Pawns have the most complex rules of movement:
 
@@ -191,7 +208,9 @@ describe ChessValidator::Board do
     #
     # The pawn is also involved in the two special moves en passant
     # and promotion (Schiller 2003:17–19).
-    context "the pawn", wip: true
+    context "the pawn" do
+      it "has a lot of other behavior described on wikipedia", wip: true
+    end
   end
 
   def good(from, to)
@@ -203,8 +222,8 @@ describe ChessValidator::Board do
   end
 
   def try_move(from, to, ret)
-    expect(board.evaluate(ChessValidator::Position.new(from),
-                          ChessValidator::Position.new(to))).to eq ret
+    expect(board.evaluate(ChessValidator::Position.parse(from),
+                          ChessValidator::Position.parse(to))).to eq ret
   end
 
   def all_positions

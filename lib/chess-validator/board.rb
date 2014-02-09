@@ -1,22 +1,40 @@
+require_relative 'pieces'
+
 module ChessValidator
+  class Square
+    attr_reader :piece
+
+    def initialize(piece)
+      @piece = piece
+    end
+
+    def clear?
+      piece.clear?
+    end
+
+    def inspect
+      "Square(#{piece.to_s})"
+    end
+  end
+
   class Board
     def initialize(board)
-      @pieces = board.each_line.map do |line|
+      @squares = board.each_line.map do |line|
         parse_rank(line)
       end.reverse # ranks of the last line of the file is 1...
     end
 
+    def square(position)
+      @squares[position.rank-1][position.file-1]
+    end
+
     def evaluate(from, to)
-      piece_type(from).valid_move?(from, to)
+      square(from).piece.valid_move?(from, to)
     end
 
     private
 
-    def piece_type(position)
-      @pieces[position.rank-1][position.file-1]
-    end
-
-    PIECE_TYPE_STRINGS = {
+    PIECE_TYPES = {
       'K' => King,
       'B' => Bishop,
       'Q' => Queen,
@@ -28,11 +46,11 @@ module ChessValidator
     def parse_rank(line)
       line.split(' ').map do |piece|
         if piece == '--'
-          Empty
+          Square.new(Empty.new(self))
         else
-          piece_type = PIECE_TYPE_STRINGS[piece[1]]
+          piece_type = PIECE_TYPES[piece[1]]
           fail "Couldn't understand #{piece}" if piece_type.nil?
-          piece_type
+          Square.new(piece_type.new(self))
         end
       end
     end
