@@ -5,7 +5,7 @@ module ChessValidator
     end
 
     def backwards?(from, to)
-      if @board.square(from).color == :white
+      if square(from).color == :white
         from.rank > to.rank
       else
         to.rank > from.rank
@@ -14,8 +14,8 @@ module ChessValidator
 
     # TODO forward square method
     def valid_capture?(from, to)
-      !@board.square(to).clear? &&
-        (@board.square(from).color != @board.square(to).color)
+      !square(to).clear? &&
+        (square(from).color != square(to).color)
     end
 
     def horizontal_clear?(from, to, capturing_allowed = true)
@@ -35,6 +35,10 @@ module ChessValidator
 
     private
 
+    def square(position)
+      @board.square(position)
+    end
+
     def horizontal_steps_clear?(from, to)
       horizontal_steps_between(from, to)
         .all? { |square| square.clear? }
@@ -51,7 +55,7 @@ module ChessValidator
     end
 
     def final_step_allowed?(to, capturing_allowed)
-      @board.square(to).clear? || capturing_allowed
+      square(to).clear? || capturing_allowed
     end
 
     def file_steps(from, to)
@@ -74,14 +78,14 @@ module ChessValidator
     def horizontal_steps_between(from, to)
       fail unless from.rank == to.rank
       fsteps = file_steps(from, to)
-      fsteps.map { |file| @board.square(Position.new(from.rank, file)) }
+      fsteps.map { |file| square(Position.new(from.rank, file)) }
     end
 
     def vertical_steps_between(from, to)
       fail unless from.file == to.file
       rsteps = rank_steps(from, to)
       rsteps.map do |rank|
-        @board.square(Position.new(rank, from.file))
+        square(Position.new(rank, from.file))
       end
     end
 
@@ -89,7 +93,7 @@ module ChessValidator
       rsteps = rank_steps(from, to)
       fsteps = file_steps(from, to)
       rsteps.zip(fsteps).map do |rank, file|
-        @board.square(Position.new(rank, file))
+        square(Position.new(rank, file))
       end
     end
   end
