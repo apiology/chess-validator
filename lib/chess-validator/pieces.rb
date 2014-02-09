@@ -1,5 +1,6 @@
 # rank == rows == numbers
 # file == columns == numbers
+# TODO: Consider taking path_clear logic into its own class
 module ChessValidator
   class PieceType
     def initialize(board)
@@ -15,34 +16,52 @@ module ChessValidator
     end
 
     def horiz_path_clear(from, to)
-      ret = horiz_path_between(from, to).all? { |square| square.clear? }
-      ret
+      horiz_path_between(from, to).all? { |square| square.clear? }
     end
 
     def vertical_path_clear(from, to)
-      ret = vertical_path_between(from, to).all? { |square| square.clear? }
-      ret
+      vertical_path_between(from, to).all? { |square| square.clear? }
+    end
+
+    def diagonal_path_clear(from, to)
+      diagonal_path_between(from, to).all? { |square| square.clear? }
+    end
+
+    def file_path(from, to)
+      if from.file > to.file
+        (from.file-1).downto(to.file)
+      else
+        (from.file+1).upto(to.file)
+      end
     end
 
     def horiz_path_between(from, to)
       fail unless from.rank == to.rank
-      if from.file > to.file
-        path = (from.file+1).downto(to.file) # TODO this is wrong
+      fpath = file_path(from, to)
+      fpath.map { |file| @board.square(Position.new(from.rank, file)) }
+    end
+
+    def rank_path(from, to)
+      if from.rank > to.rank
+        (from.rank-1).downto(to.rank)
       else
-        path = (from.file+1).upto(to.file)
+        (from.rank+1).upto(to.rank)
       end
-      path.map { |file| @board.square(Position.new(from.rank, file)) }
     end
 
     def vertical_path_between(from, to)
       fail unless from.file == to.file
-      if from.rank > to.rank
-        path = (from.rank-1).downto(to.rank)
-      else
-        path = (from.rank+1).upto(to.rank)
-      end
-      path.map do |rank|
+      rpath = rank_path(from, to)
+      rpath.map do |rank|
         @board.square(Position.new(rank, from.file))
+      end
+    end
+
+    def diagonal_path_between(from, to)
+      rpath = rank_path(from, to)
+      fpath = file_path(from, to)
+      rpath.zip(fpath).map do |rank, file|
+        @board.square(Position.new(rank, file))
       end
     end
 
@@ -85,7 +104,8 @@ module ChessValidator
 
   class Bishop < PieceType
     def internal_valid_move?(from, to)
-      horizontal_delta(from, to) == vertical_delta(from, to)
+      horizontal_delta(from, to) == vertical_delta(from, to) &&
+        diagonal_path_clear(from, to)
     end
   end
 

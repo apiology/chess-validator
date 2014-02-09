@@ -131,6 +131,7 @@ describe ChessValidator::Board do
         end
       end
 
+      # Note: not part of puzzlenode.com challenge
       it "It also is moved when castling.", wip: true
     end
 
@@ -149,7 +150,10 @@ describe ChessValidator::Board do
         bad('f8', 'c1')
       end
 
-      context "it cannot skip over occupied squares", wip: true
+      it "cannot skip over occupied squares" do
+        bad('f8', 'b4')
+        bad('f1', 'c4')
+      end
     end
 
     # The queen moves any number of vacant squares in a horizontal,
@@ -184,7 +188,7 @@ describe ChessValidator::Board do
     # the new location.
     context "the knight" do
       context "moves to the nearest square not on the same rank," +
-        "file, or diagonal" wip: true
+        "file, or diagonal", wip: true
       context "can jump over other pieces", wip: true
     end
 
