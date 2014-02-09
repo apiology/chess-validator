@@ -3,7 +3,7 @@ require 'spec_helper'
 require 'chess-validator'
 
 describe ChessValidator::Board do
-  subject(:board) { ChessValidator::Board.new(board_text) }
+  subject(:board) { ChessValidator::Board.parse(board_text) }
 
   context "In the opening board" do
     subject(:board_text) { IO.read('spec/samples/simple_board.txt') }
@@ -85,6 +85,14 @@ describe ChessValidator::Board do
         it "diagonally" do
           good('a8', 'b7')
         end
+      end
+
+      it "can't create check condition from opposite color" do
+        bad('e4', 'e5')
+      end
+
+      it "can create check condition from same color" do
+        good('e4', 'f3')
       end
 
       it "tries to go somewhere bizarre" do
@@ -209,8 +217,6 @@ describe ChessValidator::Board do
         good('d3', 'e5')
       end
     end
-
-    context "can't create check condition", wip: true
 
     # Pawns have the most complex rules of movement:
 

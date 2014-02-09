@@ -4,6 +4,10 @@ module ChessValidator
       @board = board
     end
 
+    def king_would_be_in_check?(from, to)
+      @board.make_move(from, to).king_is_in_check?(to)
+    end
+
     def backwards?(from, to)
       if square(from).color == :white
         from.rank > to.rank

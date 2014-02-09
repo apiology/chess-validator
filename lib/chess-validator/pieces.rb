@@ -52,7 +52,8 @@ module ChessValidator
   class King < PieceType
     def valid_move?(from, to)
       horizontal_delta(from, to).abs <= 1 &&
-        vertical_delta(from, to).abs <= 1
+        vertical_delta(from, to).abs <= 1 &&
+        !@checker.king_would_be_in_check?(from, to)
     end
   end
 
