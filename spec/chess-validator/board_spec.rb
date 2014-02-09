@@ -171,8 +171,12 @@ describe ChessValidator::Board do
         it "cannot skip over occupied squares going vertically" do
           bad('f4', 'f8')
         end
-        it "cannot skip over occupied squares going horizontally", wip: true
-        it "cannot skip over occupied squares going diagonally", wip: true
+        it "cannot skip over occupied squares going horizontally" do
+          bad('f4', 'c4')
+        end
+        it "cannot skip over occupied squares going diagonally" do
+          bad('f4', 'd2')
+        end
       end
     end
 

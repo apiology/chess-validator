@@ -1,6 +1,5 @@
 # rank == rows == numbers
 # file == columns == numbers
-
 module ChessValidator
   class PieceType
     def initialize(checker)
@@ -65,7 +64,13 @@ module ChessValidator
       horiz = horizontal_delta(from, to)
       vert = vertical_delta(from, to)
       if horiz > 0
-        vert == 0 || horiz == vert # TODO - need to check clear path
+        if vert == 0
+          @checker.horiz_clear(from, to)
+        elsif horiz == vert
+          @checker.diagonal_clear(from, to)
+        else
+          false
+        end
       elsif vert > 0
         @checker.vertical_clear(from, to)
       else
