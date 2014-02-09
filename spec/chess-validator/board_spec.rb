@@ -296,9 +296,26 @@ describe ChessValidator::Board do
           bad('c6', 'c3')
           bad('c6', 'e6')
         end
-        it "as bishop", wip: true
-        it "as queen", wip: true
-        it "as knight", wip: true
+
+        it "as bishop" do
+          bad('f8', 'c5')
+          good('c3', 'b2')
+          bad('f1', 'd3')
+          good('e6', 'd5')
+        end
+
+        it "as queen" do
+          good('c2', 'b2')
+          good('c2', 'f2')
+          good('c2', 'd3')
+          bad('f4', 'e4')
+        end
+
+        it "as knight" do
+          good('d3', 'c5')
+          bad('d3', 'f2')
+        end
+
         # Pawns are the only pieces that capture differently from how they
         # move. A pawn can capture an enemy piece on either of the two
         # squares diagonally in front of the pawn (but cannot move to

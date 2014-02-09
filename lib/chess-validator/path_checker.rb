@@ -12,6 +12,7 @@ module ChessValidator
       end
     end
 
+    # TODO can I make this simpler given final step checked elsewhere
     def horizontal_clear?(from, to, capturing_allowed = true)
       horizontal_steps_clear?(from, to) &&
         final_step_allowed?(from, to, capturing_allowed)
