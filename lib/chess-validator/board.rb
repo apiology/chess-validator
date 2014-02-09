@@ -22,11 +22,11 @@ module ChessValidator
       Board.new(new_squares)
     end
 
-    def king_is_in_check?(position)
+    def king_is_in_check?(king_position)
       all_positions.any? do |from|
         !square(from).clear? &&
-          square(from).color != square(position).color &&
-          valid_move?(from, position)
+          square(from).color != square(king_position).color &&
+          valid_move?(from, king_position)
       end
     end
 
@@ -41,15 +41,11 @@ module ChessValidator
     end
 
     def all_positions
-      all_ranks.zip(all_files).map { |rank, file| Position.new(rank, file) }
+      all_ranks_and_files.map { |rank, file| Position.new(rank, file) }
     end
 
-    def all_ranks
-      (1..8)
-    end
-
-    def all_files
-      (1..8)
+    def all_ranks_and_files
+      (1..8).zip(1..8)
     end
   end
 end

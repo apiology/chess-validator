@@ -22,7 +22,7 @@ module ChessValidator
       'N' => Knight
     }
 
-    PIECE_COLOR = {
+    PIECE_COLORS = {
       'w' => :white,
       'b' => :black
     }
@@ -39,7 +39,7 @@ module ChessValidator
       else
         piece_type = PIECE_TYPES[piece[1]]
         fail "Couldn't understand type of #{piece}" if piece_type.nil?
-        piece_color = PIECE_COLOR[piece[0]]
+        piece_color = PIECE_COLORS[piece[0]]
         fail "Couldn't understand color of #{piece}" if piece_color.nil?
         Square.new(piece_color, piece_type.new(@checker))
       end
