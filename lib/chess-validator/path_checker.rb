@@ -18,20 +18,19 @@ module ChessValidator
         (@board.square(from).color != @board.square(to).color)
     end
 
-    # TODO can I make this simpler given final step checked elsewhere
     def horizontal_clear?(from, to, capturing_allowed = true)
       horizontal_steps_clear?(from, to) &&
-        final_step_allowed?(from, to, capturing_allowed)
+        final_step_allowed?(to, capturing_allowed)
     end
 
     def vertical_clear?(from, to, capturing_allowed = true)
       vertical_steps_clear?(from, to) &&
-        final_step_allowed?(from, to, capturing_allowed)
+        final_step_allowed?(to, capturing_allowed)
     end
 
     def diagonal_clear?(from, to, capturing_allowed = true)
       diagonal_steps_clear?(from, to) &&
-        final_step_allowed?(from, to, capturing_allowed)
+        final_step_allowed?(to, capturing_allowed)
     end
 
     private
@@ -51,10 +50,8 @@ module ChessValidator
         .all? { |square| square.clear? }
     end
 
-    def final_step_allowed?(from, to, capturing_allowed)
-      @board.square(to).clear? ||
-        (capturing_allowed &&
-         @board.square(from).color != @board.square(to).color)
+    def final_step_allowed?(to, capturing_allowed)
+      @board.square(to).clear? || capturing_allowed
     end
 
     def file_steps(from, to)
