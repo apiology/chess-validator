@@ -317,10 +317,23 @@ describe ChessValidator::Board do
         end
 
         # Pawns are the only pieces that capture differently from how they
-        # move. A pawn can capture an enemy piece on either of the two
+        # move.
+
+        # A pawn can capture an enemy piece on either of the two
         # squares diagonally in front of the pawn (but cannot move to
         # those squares if they are vacant).
-        it "as pawn", wip: true
+        context "as pawn" do
+          it "can capture an enemy piece on either of the two " +
+            " squares diagonally in front of the pawn" do
+            good('b6', 'a5')
+            good('f7', 'e6')
+            good('h5', 'g6')
+            good('b2', 'c3')
+          end
+          it "cannot move to those squares if they are vacant", wip: true
+          it "cannot move to those squares if friendly piece is there",
+            wip: true
+        end
       end
 
       context "cannot capture friendly pieces", wip: true

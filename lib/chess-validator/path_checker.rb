@@ -12,6 +12,12 @@ module ChessValidator
       end
     end
 
+    # TODO forward square method
+    def valid_capture?(from, to)
+      !@board.square(to).clear? &&
+        (@board.square(from).color != @board.square(to).color)
+    end
+
     # TODO can I make this simpler given final step checked elsewhere
     def horizontal_clear?(from, to, capturing_allowed = true)
       horizontal_steps_clear?(from, to) &&

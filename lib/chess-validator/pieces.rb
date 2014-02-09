@@ -23,7 +23,10 @@ module ChessValidator
     def valid_move?(from, to)
       vdelta = vertical_delta(from, to)
       hdelta = horizontal_delta(from, to)
-      if hdelta != 0
+      # TODO can't capture backwards
+      if vdelta == 1 && hdelta == 1 && @checker.valid_capture?(from, to)
+        true
+      elsif hdelta != 0
         false
       elsif @checker.backwards?(from, to)
         false
