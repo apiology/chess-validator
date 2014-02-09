@@ -285,8 +285,17 @@ describe ChessValidator::Board do
 
     context "all pieces" do
       context "can capture opposing pieces" do
-        it "as king", wip: true
-        it "as rook", wip: true
+        it "as king" do
+          good('e4', 'd5')
+          bad('e4', 'f4')
+        end
+
+        it "as rook" do
+          good('c6', 'b6')
+          good('c6', 'c5')
+          bad('c6', 'c3')
+          bad('c6', 'e6')
+        end
         it "as bishop", wip: true
         it "as queen", wip: true
         it "as knight", wip: true

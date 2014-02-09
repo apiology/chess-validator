@@ -12,54 +12,79 @@ module ChessValidator
       end
     end
 
-    def horizontal_clear?(from, to)
-      horiz_path_between(from, to).all? { |square| square.clear? }
+    def horizontal_clear?(from, to, capturing_allowed = true)
+      horizontal_steps_clear?(from, to) &&
+        final_step_allowed?(from, to, capturing_allowed)
     end
 
-    def vertical_clear?(from, to)
-      vertical_path_between(from, to).all? { |square| square.clear? }
+    def vertical_clear?(from, to, capturing_allowed = true)
+      vertical_steps_clear?(from, to) &&
+        final_step_allowed?(from, to, capturing_allowed)
     end
 
-    def diagonal_clear?(from, to)
-      diagonal_path_between(from, to).all? { |square| square.clear? }
+    def diagonal_clear?(from, to, capturing_allowed = true)
+      diagonal_steps_clear?(from, to) &&
+        final_step_allowed?(from, to, capturing_allowed)
     end
 
     private
 
-    def file_path(from, to)
+    def horizontal_steps_clear?(from, to)
+      horizontal_steps_between(from, to)
+        .all? { |square| square.clear? }
+    end
+
+    def vertical_steps_clear?(from, to)
+      vertical_steps_between(from, to)
+        .all? { |square| square.clear? }
+    end
+
+    def diagonal_steps_clear?(from, to)
+      diagonal_steps_between(from, to)
+        .all? { |square| square.clear? }
+    end
+
+    def final_step_allowed?(from, to, capturing_allowed)
+      @board.square(to).clear? ||
+        (capturing_allowed &&
+         @board.square(from).color != @board.square(to).color)
+    end
+
+    def file_steps(from, to)
       if from.file > to.file
-        (from.file-1).downto(to.file)
+        (from.file-1).downto(to.file+1)
       else
-        (from.file+1).upto(to.file)
+        (from.file+1).upto(to.file-1)
       end
     end
 
-    def horiz_path_between(from, to)
-      fail unless from.rank == to.rank
-      fpath = file_path(from, to)
-      fpath.map { |file| @board.square(Position.new(from.rank, file)) }
-    end
-
-    def rank_path(from, to)
+    def rank_steps(from, to)
       if from.rank > to.rank
-        (from.rank-1).downto(to.rank)
+        (from.rank-1).downto(to.rank+1)
       else
-        (from.rank+1).upto(to.rank)
+        (from.rank+1).upto(to.rank-1)
       end
     end
 
-    def vertical_path_between(from, to)
+    # TODO is creating new position object needed?
+    def horizontal_steps_between(from, to)
+      fail unless from.rank == to.rank
+      fsteps = file_steps(from, to)
+      fsteps.map { |file| @board.square(Position.new(from.rank, file)) }
+    end
+
+    def vertical_steps_between(from, to)
       fail unless from.file == to.file
-      rpath = rank_path(from, to)
-      rpath.map do |rank|
+      rsteps = rank_steps(from, to)
+      rsteps.map do |rank|
         @board.square(Position.new(rank, from.file))
       end
     end
 
-    def diagonal_path_between(from, to)
-      rpath = rank_path(from, to)
-      fpath = file_path(from, to)
-      rpath.zip(fpath).map do |rank, file|
+    def diagonal_steps_between(from, to)
+      rsteps = rank_steps(from, to)
+      fsteps = file_steps(from, to)
+      rsteps.zip(fsteps).map do |rank, file|
         @board.square(Position.new(rank, file))
       end
     end
