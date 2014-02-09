@@ -205,7 +205,9 @@ describe ChessValidator::Board do
         bad('g6', 'h6')
       end
 
-      it "can jump over other pieces", wip: true
+      it "can jump over other pieces" do
+        good('d3', 'e5')
+      end
     end
 
     context "can't create check condition", wip: true
@@ -229,7 +231,51 @@ describe ChessValidator::Board do
     # The pawn is also involved in the two special moves en passant
     # and promotion (Schiller 2003:17–19).
     context "the pawn" do
-      it "has a lot of other behavior described on wikipedia", wip: true
+      it "moves straight forward one square, if that square is vacant" do
+        good('b6', 'b5')
+        good('f7', 'f6')
+      end
+
+      it "cannot move forward if square is occupied" do
+        bad('e3', 'e4')
+      end
+
+      it "can move two squares forward if it has not yet moved" do
+        good('f7', 'f5')
+        good('b2', 'b4')
+      end
+
+      it "cannot move two squares forward if one is occupied" do
+        bad('f2', 'f4')
+        bad('c5', 'c3')
+      end
+
+      it "cannot move two squares forward if it has already moved" do
+        bad('b6', 'b4')
+        bad('h5', 'h7')
+      end
+
+      it "cannot move more than two squares" do
+        bad('b2', 'b5')
+      end
+
+      it "cannot move backwards" do
+        bad('b6', 'b7')
+        bad('b2', 'b1')
+      end
+
+      it "cannot move in any other direction", wip: true
+
+      # Pawns are the only pieces that capture differently from how they
+      # move. A pawn can capture an enemy piece on either of the two
+      # squares diagonally in front of the pawn (but cannot move to
+      # those squares if they are vacant).
+      it "has odd capture rules", wip: true
+
+      # The pawn is also involved in the two special moves en passant
+      # and promotion (Schiller 2003:17–19).
+      it "has is involved with en passant", wip: true
+      it "has is involved with promotion", wip: true
     end
 
     context "all pieces" do

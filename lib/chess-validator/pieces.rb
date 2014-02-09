@@ -21,7 +21,20 @@ module ChessValidator
 
   class Pawn < PieceType
     def valid_move?(from, to)
-      vertical_delta(from, to) != 3 && horizontal_delta(from, to) == 0
+      vdelta = vertical_delta(from, to)
+      hdelta = horizontal_delta(from, to)
+      if hdelta != 0
+        false
+      elsif @checker.backwards?(from, to)
+        false
+      elsif vdelta == 2
+        # TODO what if they are the wrong color?
+        from.rank == 2 || from.rank == 7
+      elsif vdelta == 1
+        true
+      else
+        false
+      end
     end
   end
 
@@ -43,16 +56,16 @@ module ChessValidator
   class Bishop < PieceType
     def valid_move?(from, to)
       horizontal_delta(from, to) == vertical_delta(from, to) &&
-        @checker.diagonal_clear(from, to)
+        @checker.diagonal_clear?(from, to)
     end
   end
 
   class Rook < PieceType
     def valid_move?(from, to)
       if horizontal_delta(from, to) > 0
-        vertical_delta(from, to) == 0 && @checker.horiz_clear(from, to)
+        vertical_delta(from, to) == 0 && @checker.horizontal_clear?(from, to)
       elsif vertical_delta(from, to) > 0
-        @checker.vertical_clear(from, to)
+        @checker.vertical_clear?(from, to)
       else
         true
       end
@@ -60,19 +73,20 @@ module ChessValidator
   end
 
   class Queen < PieceType
+    # TODO: reduce size of method
     def valid_move?(from, to)
       horiz = horizontal_delta(from, to)
       vert = vertical_delta(from, to)
       if horiz > 0
         if vert == 0
-          @checker.horiz_clear(from, to)
+          @checker.horizontal_clear?(from, to)
         elsif horiz == vert
-          @checker.diagonal_clear(from, to)
+          @checker.diagonal_clear?(from, to)
         else
           false
         end
       elsif vert > 0
-        @checker.vertical_clear(from, to)
+        @checker.vertical_clear?(from, to)
       else
         true
       end

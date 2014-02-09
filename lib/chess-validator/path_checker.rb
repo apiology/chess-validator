@@ -4,15 +4,23 @@ module ChessValidator
       @board = board
     end
 
-    def horiz_clear(from, to)
+    def backwards?(from, to)
+      if @board.square(from).color == :white
+        from.rank > to.rank
+      else
+        to.rank > from.rank
+      end
+    end
+
+    def horizontal_clear?(from, to)
       horiz_path_between(from, to).all? { |square| square.clear? }
     end
 
-    def vertical_clear(from, to)
+    def vertical_clear?(from, to)
       vertical_path_between(from, to).all? { |square| square.clear? }
     end
 
-    def diagonal_clear(from, to)
+    def diagonal_clear?(from, to)
       diagonal_path_between(from, to).all? { |square| square.clear? }
     end
 
