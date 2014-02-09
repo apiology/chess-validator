@@ -2,7 +2,6 @@ require_relative 'path_checker'
 
 # rank == rows == numbers
 # file == columns == numbers
-# TODO: Consider taking path_clear logic into its own class
 module ChessValidator
   class PieceType
     def initialize(board)
