@@ -8,8 +8,8 @@ describe "Chess validator" do
       .to eq("USAGE: chess [input board file] < [moves file]\n")
   end
 
-  # TODO: Add 'complex_1' and 'complex_2' after simple stuff works
-  ['simple'].each do |type|
+  # TODO: Add 'complex_2' after I write out cases
+  ['simple', 'complex_1'].each do |type|
     it "handles #{type} case", wip: false do
       expect(exec_io "cat spec/samples/#{type}_moves.txt | " +
              "chess spec/samples/#{type}_board.txt")
