@@ -21,20 +21,25 @@ module ChessValidator
   end
 
   class Pawn < PieceType
-    # TODO: reduce size of method
     def valid_move?(from, to)
       vdelta = vertical_delta(from, to)
       hdelta = horizontal_delta(from, to)
       if @checker.backwards?(from, to)
         false
+      # a forward diagonal move can capture...
       elsif vdelta == 1 && hdelta == 1 && @checker.valid_capture?(from, to)
         true
+      # no other sideways movement allowed.
       elsif hdelta != 0
         false
+      # moving forward two spaces is allowed from the initial
+      # position, so long as it doesn't capture.
       elsif vdelta == 2
         (from.rank == 2 || from.rank == 7) &&
           @checker.vertical_clear?(from, to,
                                    capturing_allowed: false)
+      # moving forward one spaces is always allowed, so long as it
+      # doesn't capture.
       elsif vdelta == 1
         @checker.vertical_clear?(from, to,
                                  capturing_allowed: false)
@@ -46,16 +51,16 @@ module ChessValidator
 
   class Knight < PieceType
     def valid_move?(from, to)
-      v = vertical_delta(from, to)
-      h = horizontal_delta(from, to)
-      (v == 2 && h == 1) || (h == 2 && v == 1)
+      vert = vertical_delta(from, to)
+      horiz = horizontal_delta(from, to)
+      (vert == 2 && horiz == 1) || (horiz == 2 && vert == 1)
     end
   end
 
   class King < PieceType
     def valid_move?(from, to)
-      horizontal_delta(from, to).abs <= 1 &&
-        vertical_delta(from, to).abs <= 1 &&
+      horizontal_delta(from, to) <= 1 &&
+        vertical_delta(from, to) <= 1 &&
         !@checker.king_would_be_in_check?(from, to)
     end
   end
@@ -80,7 +85,6 @@ module ChessValidator
   end
 
   class Queen < PieceType
-    # TODO: reduce size of method
     def valid_move?(from, to)
       horiz = horizontal_delta(from, to)
       vert = vertical_delta(from, to)
@@ -90,12 +94,11 @@ module ChessValidator
         elsif horiz == vert
           @checker.diagonal_clear?(from, to)
         else
+          # can only move diagonally, horizontally, or vertically.
           false
         end
-      elsif vert > 0
+      else # horiz is 0
         @checker.vertical_clear?(from, to)
-      else
-        true
       end
     end
   end

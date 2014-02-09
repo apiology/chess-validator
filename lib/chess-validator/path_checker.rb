@@ -1,5 +1,4 @@
 module ChessValidator
-  # TODO: PathChecker or MoveChecker?
   # Checks whether a given move is valid along a given path
   class PathChecker
     def initialize(board)
