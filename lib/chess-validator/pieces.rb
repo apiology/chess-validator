@@ -2,6 +2,7 @@ require_relative 'path_checker'
 
 # rank == rows == numbers
 # file == columns == numbers
+
 module ChessValidator
   class PieceType
     def initialize(board)
@@ -29,6 +30,11 @@ module ChessValidator
       if from.rank == to.rank &&
           from.file == to.file
         false
+      # TODO: Pass in squares rather than positions so I don't have
+      # to work through board?
+      elsif @board.square(from).color == @board.square(to).color
+        # can't capture own position
+        false
       else
         internal_valid_move?(from, to)
       end
@@ -43,7 +49,9 @@ module ChessValidator
 
   class Knight < PieceType
     def internal_valid_move?(from, to)
-      vertical_delta(from, to) == 2
+      v = vertical_delta(from, to)
+      h = horizontal_delta(from, to)
+      (v == 2 && h == 1) || (h == 2 && v == 1)
     end
   end
 
@@ -84,16 +92,6 @@ module ChessValidator
       else
         true
       end
-    end
-  end
-
-  class Empty < PieceType
-    def internal_valid_move?(from, to)
-      false
-    end
-
-    def clear?
-      true
     end
   end
 end

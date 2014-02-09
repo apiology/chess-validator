@@ -1,17 +1,36 @@
 module ChessValidator
-  class Square
-    attr_reader :piece
+  class EmptySquare
+    def color
+      :empty
+    end
 
-    def initialize(piece)
+    def valid_move?(_, _)
+      false
+    end
+
+    def clear?
+      true
+    end
+  end
+
+  class Square
+    attr_reader :color
+
+    def initialize(color, piece)
+      @color = color
       @piece = piece
     end
 
     def clear?
-      piece.clear?
+      @piece.clear?
+    end
+
+    def valid_move?(from, to)
+      @piece.valid_move?(from, to)
     end
 
     def inspect
-      "Square(#{piece.to_s})"
+      "Square(#{color} #{piece.to_s})"
     end
   end
 end

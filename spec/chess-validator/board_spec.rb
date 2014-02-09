@@ -3,8 +3,6 @@ require 'spec_helper'
 require 'chess-validator'
 
 describe ChessValidator::Board do
-  it "tries to capture own piece", wip: true
-
   subject(:board) { ChessValidator::Board.new(board_text) }
 
   context "In the opening board" do
@@ -15,10 +13,6 @@ describe ChessValidator::Board do
         bad(position, position)
       end
     end
-
-    it "can capture opposing pieces", wip: true
-
-    it "cannot capture friendly pieces", wip: true
 
     context "the white pawn" do
       it "tries to jump to hyperspace" do
@@ -52,7 +46,7 @@ describe ChessValidator::Board do
       it "hooks down and to the right" do
         good('b8', 'c6')
       end
-      it "hooks too far to the right" do
+      it "tries to capture own piece" do
         bad('b8', 'd7')
       end
     end
@@ -174,9 +168,11 @@ describe ChessValidator::Board do
         it "does not move in any other direction" do
           bad('f4', 'g2')
         end
-        it "cannot skip over occupied squares" do
+        it "cannot skip over occupied squares going vertically" do
           bad('f4', 'f8')
         end
+        it "cannot skip over occupied squares going horizontally", wip: true
+        it "cannot skip over occupied squares going diagonally", wip: true
       end
     end
 
@@ -187,9 +183,25 @@ describe ChessValidator::Board do
     # pattern.) The knight is not blocked by other pieces: it jumps to
     # the new location.
     context "the knight" do
-      context "moves to the nearest square not on the same rank," +
-        "file, or diagonal", wip: true
-      context "can jump over other pieces", wip: true
+      it "moves to the nearest square not on the same rank, " +
+        "file, or diagonal" do
+        good('g6', 'e5')
+        good('a5', 'b7')
+        good('a5', 'c4')
+        good('d3', 'e1')
+        good('d3', 'c1')
+        good('d3', 'b4')
+        good('g6', 'h8')
+      end
+
+      it "does not move in any other direction" do
+        bad('a5', 'a7')
+        bad('d3', 'd1')
+        bad('g6', 'g1')
+        bad('g6', 'h6')
+      end
+
+      it "can jump over other pieces", wip: true
     end
 
     context "can't create check condition", wip: true
@@ -214,6 +226,19 @@ describe ChessValidator::Board do
     # and promotion (Schiller 2003:17–19).
     context "the pawn" do
       it "has a lot of other behavior described on wikipedia", wip: true
+    end
+
+    context "all pieces" do
+      context "can capture opposing pieces" do
+        it "as king", wip: true
+        it "as rook", wip: true
+        it "as bishop", wip: true
+        it "as queen", wip: true
+        it "as knight", wip: true
+        it "as pawn", wip: true
+      end
+
+      context "cannot capture friendly pieces", wip: true
     end
   end
 
