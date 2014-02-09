@@ -366,6 +366,28 @@ describe ChessValidator::Board do
     end
   end
 
+  context "In an extra board I wrote" do
+    subject(:board_text) { IO.read('spec/samples/extra_board.txt') }
+
+    context "Pawn can't capture by moving" do
+      it "directly forwards" do
+        bad('b3', 'b4')
+      end
+
+      it "directly forward two spaces" do
+        bad('h2', 'h4')
+      end
+
+      it "directly backwards" do
+        bad('g4', 'g3')
+      end
+
+      it "diagonally backwards" do
+        bad('d4', 'e3')
+      end
+    end
+  end
+
   def good(from, to)
     try_move(from, to, true)
   end

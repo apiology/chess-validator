@@ -7,7 +7,9 @@ module ChessValidator
     end
 
     def king_would_be_in_check?(from, to)
-      @board.make_move(from, to).king_is_in_check?(to)
+      new_board = @board.make_move(from, to)
+
+      new_board.king_is_in_check?(to)
     end
 
     def backwards?(from, to)
@@ -23,17 +25,17 @@ module ChessValidator
         (square(from).color != square(to).color)
     end
 
-    def horizontal_clear?(from, to, capturing_allowed = true)
+    def horizontal_clear?(from, to, capturing_allowed: true)
       horizontal_steps_clear?(from, to) &&
         final_step_allowed?(to, capturing_allowed)
     end
 
-    def vertical_clear?(from, to, capturing_allowed = true)
+    def vertical_clear?(from, to, capturing_allowed: true)
       vertical_steps_clear?(from, to) &&
         final_step_allowed?(to, capturing_allowed)
     end
 
-    def diagonal_clear?(from, to, capturing_allowed = true)
+    def diagonal_clear?(from, to, capturing_allowed: true)
       diagonal_steps_clear?(from, to) &&
         final_step_allowed?(to, capturing_allowed)
     end
