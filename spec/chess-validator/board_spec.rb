@@ -272,8 +272,6 @@ describe ChessValidator::Board do
         bad('h5', 'g5')
       end
 
-      it "has odd capture rules", wip: true
-
       # The pawn is also involved in the two special moves en passant
       # and promotion (Schiller 2003:17–19).
       # Note: not part of puzzlenode.com challenge
