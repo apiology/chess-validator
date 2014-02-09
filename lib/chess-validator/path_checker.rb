@@ -12,7 +12,6 @@ module ChessValidator
       end
     end
 
-    # TODO forward square method
     def valid_capture?(from, to)
       !square(to).clear? &&
         (square(from).color != square(to).color)
@@ -37,6 +36,10 @@ module ChessValidator
 
     def square(position)
       @board.square(position)
+    end
+
+    def pos(rank, file)
+      Position.new(rank, file)
     end
 
     def horizontal_steps_clear?(from, to)
@@ -74,18 +77,17 @@ module ChessValidator
       end
     end
 
-    # TODO is creating new position object needed?
     def horizontal_steps_between(from, to)
       fail unless from.rank == to.rank
       fsteps = file_steps(from, to)
-      fsteps.map { |file| square(Position.new(from.rank, file)) }
+      fsteps.map { |file| square(pos(from.rank, file)) }
     end
 
     def vertical_steps_between(from, to)
       fail unless from.file == to.file
       rsteps = rank_steps(from, to)
       rsteps.map do |rank|
-        square(Position.new(rank, from.file))
+        square(pos(rank, from.file))
       end
     end
 
@@ -93,7 +95,7 @@ module ChessValidator
       rsteps = rank_steps(from, to)
       fsteps = file_steps(from, to)
       rsteps.zip(fsteps).map do |rank, file|
-        square(Position.new(rank, file))
+        square(pos(rank, file))
       end
     end
   end
