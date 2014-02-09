@@ -7,4 +7,3 @@ wR -- bB wN wP -- -- -- 3
 -- wP bQ -- -- wP -- -- 2
 -- -- -- -- -- wB -- -- 1
 a  b  c  d  e  f  g  h
-
