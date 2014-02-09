@@ -1,3 +1,5 @@
+require_relative 'path_checker'
+
 # rank == rows == numbers
 # file == columns == numbers
 # TODO: Consider taking path_clear logic into its own class
@@ -5,6 +7,7 @@ module ChessValidator
   class PieceType
     def initialize(board)
       @board = board
+      @checker = PathChecker.new(board)
     end
 
     def clear?
@@ -13,56 +16,6 @@ module ChessValidator
 
     def to_s
       self.class.to_s
-    end
-
-    def horiz_path_clear(from, to)
-      horiz_path_between(from, to).all? { |square| square.clear? }
-    end
-
-    def vertical_path_clear(from, to)
-      vertical_path_between(from, to).all? { |square| square.clear? }
-    end
-
-    def diagonal_path_clear(from, to)
-      diagonal_path_between(from, to).all? { |square| square.clear? }
-    end
-
-    def file_path(from, to)
-      if from.file > to.file
-        (from.file-1).downto(to.file)
-      else
-        (from.file+1).upto(to.file)
-      end
-    end
-
-    def horiz_path_between(from, to)
-      fail unless from.rank == to.rank
-      fpath = file_path(from, to)
-      fpath.map { |file| @board.square(Position.new(from.rank, file)) }
-    end
-
-    def rank_path(from, to)
-      if from.rank > to.rank
-        (from.rank-1).downto(to.rank)
-      else
-        (from.rank+1).upto(to.rank)
-      end
-    end
-
-    def vertical_path_between(from, to)
-      fail unless from.file == to.file
-      rpath = rank_path(from, to)
-      rpath.map do |rank|
-        @board.square(Position.new(rank, from.file))
-      end
-    end
-
-    def diagonal_path_between(from, to)
-      rpath = rank_path(from, to)
-      fpath = file_path(from, to)
-      rpath.zip(fpath).map do |rank, file|
-        @board.square(Position.new(rank, file))
-      end
     end
 
     def horizontal_delta(from, to)
@@ -105,16 +58,16 @@ module ChessValidator
   class Bishop < PieceType
     def internal_valid_move?(from, to)
       horizontal_delta(from, to) == vertical_delta(from, to) &&
-        diagonal_path_clear(from, to)
+        @checker.diagonal_clear(from, to)
     end
   end
 
   class Rook < PieceType
     def internal_valid_move?(from, to)
       if horizontal_delta(from, to) > 0
-        vertical_delta(from, to) == 0 && horiz_path_clear(from, to)
+        vertical_delta(from, to) == 0 && @checker.horiz_clear(from, to)
       elsif vertical_delta(from, to) > 0
-        vertical_path_clear(from, to)
+        @checker.vertical_clear(from, to)
       else
         true
       end
@@ -128,7 +81,7 @@ module ChessValidator
       if horiz > 0
         vert == 0 || horiz == vert # TODO - need to check clear path
       elsif vert > 0
-        vertical_path_clear(from, to)
+        @checker.vertical_clear(from, to)
       else
         true
       end
