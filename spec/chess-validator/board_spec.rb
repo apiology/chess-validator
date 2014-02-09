@@ -264,17 +264,22 @@ describe ChessValidator::Board do
         bad('b2', 'b1')
       end
 
-      it "cannot move in any other direction", wip: true
+      it "cannot move in any other direction" do
+        bad('b6', 'c7')
+        bad('b6', 'd4')
+        bad('e3', 'e7')
+        bad('h5', 'f6')
+        bad('h5', 'g5')
+      end
 
-      # Pawns are the only pieces that capture differently from how they
-      # move. A pawn can capture an enemy piece on either of the two
-      # squares diagonally in front of the pawn (but cannot move to
-      # those squares if they are vacant).
       it "has odd capture rules", wip: true
 
       # The pawn is also involved in the two special moves en passant
       # and promotion (Schiller 2003:17–19).
+      # Note: not part of puzzlenode.com challenge
       it "has is involved with en passant", wip: true
+
+      # Note: nothing in complex board could get promoted.
       it "has is involved with promotion", wip: true
     end
 
@@ -285,6 +290,10 @@ describe ChessValidator::Board do
         it "as bishop", wip: true
         it "as queen", wip: true
         it "as knight", wip: true
+        # Pawns are the only pieces that capture differently from how they
+        # move. A pawn can capture an enemy piece on either of the two
+        # squares diagonally in front of the pawn (but cannot move to
+        # those squares if they are vacant).
         it "as pawn", wip: true
       end
 
